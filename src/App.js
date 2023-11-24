@@ -38,7 +38,6 @@ function App() {
     const isNftsRoute = location.pathname === "/nfts";
     const isCustomNftRoute = location.pathname === "/customnft";
     const isAuctionsRoute = location.pathname === "/auctions"
-    console.log("hello world");
 
 
     const buttonLabel = accounts
