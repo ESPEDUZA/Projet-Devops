@@ -13,3 +13,36 @@ Pour assurer la stabilité et la qualité du code, des règles de protection de 
 
 - Les Pull Requests sont requises pour les merges.
 - Les tests CI doivent passer avec succès avant tout merge.
+
+## Version du workflow si le projet build 
+
+```yml
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag espeduza/nangaparbat:$(date +%s)
+
+    - name: Log in to Docker Hub
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Push the Docker image
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: docker push espeduza/nangaparbat:$(date +%s)
+```
