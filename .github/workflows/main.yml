@@ -13,6 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Run Tests
+      run: npm test
+
     - name: Set up Docker image tag
       id: prep
       run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
